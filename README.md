@@ -1,2 +1,2 @@
-# MachineLearningStuff
-Repository for machine learning small projects/workshops/tutorials
+# MachineLearning
+Repository for machine learning work. Including mini projects, tutorials, coursework, etc.
