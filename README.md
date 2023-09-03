@@ -1,2 +1,2 @@
-# MachineLearning
-Repository for machine learning work. Including mini projects, tutorials, coursework, etc.
+# General
+Repository for any general work. Including mini projects, tutorials, coursework, etc.
