@@ -1,6 +1,6 @@
 ## Simple AWS EC2 instance hosting Wordpress, MySQL and Apache 2
 
-visit: https://18.218.83.139/ to view sample site
+visit: http://18.218.83.139/ to view sample site
 
 ### To set up:
 
