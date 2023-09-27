@@ -1,3 +1,1 @@
-export default {
-  meals: ["Steak"],
-};
+export default {};
