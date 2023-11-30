@@ -48,3 +48,7 @@
 
 - After picking a model you need to fine-tune the hyper paramaters (parameters unaffected by training) in order to find the ideal ones for a given model. You can use Grid Search.
 - Grid Search may take a long time due to it searching every single feature in the feature space. Try randomized search for large feature space.
+
+#### Anomaly Detection:
+
+- Especially for image classification models, anomaly detection is a useful practice. There are several approaches to doing this but a straightforward way is to obtain latent vectors and calcuate the median for certain classes. A threshold can then be chosen to flag predictions that lie outside of said threshold.
