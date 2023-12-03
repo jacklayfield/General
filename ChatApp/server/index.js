@@ -1,10 +1,14 @@
 // server/index.js
 
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
+
+const harperSaveMessage = require("./services/harper-save-message");
+const harperGetMessages = require("./services/harper-get-messages");
 
 app.use(cors());
 
@@ -17,7 +21,11 @@ const io = new Server(server, {
   },
 });
 
-const CHAT_BOT = "ChatBot"; // Add this
+const CHAT_BOT = "ChatBot";
+
+let chatRoom = ""; // E.g. javascript, node,...
+let allUsers = []; // All users in current chat room
+
 // Listen for when the client connects via socket.io-client
 io.on("connection", (socket) => {
   console.log(`User connected ${socket.id}`);
@@ -27,7 +35,6 @@ io.on("connection", (socket) => {
     const { username, room } = data; // Data sent from client when join_room event emitted
     socket.join(room); // Join the user to a socket room
 
-    // Add this
     let __createdtime__ = Date.now(); // Current timestamp
     // Send message to all users currently in the room, apart from the user that just joined
     socket.to(room).emit("receive_message", {
@@ -40,6 +47,27 @@ io.on("connection", (socket) => {
       username: CHAT_BOT,
       __createdtime__,
     });
+    socket.on("send_message", (data) => {
+      const { message, username, room, __createdtime__ } = data;
+      io.in(room).emit("receive_message", data); // Send to all users in room, including sender
+      harperSaveMessage(message, username, room, __createdtime__) // Save message in db
+        .then((response) => console.log(response))
+        .catch((err) => console.log(err));
+    });
+
+    // Get last 100 messages sent in the chat room
+    harperGetMessages(room)
+      .then((last100Messages) => {
+        // console.log('latest messages', last100Messages);
+        socket.emit("last_100_messages", last100Messages);
+      })
+      .catch((err) => console.log(err));
+
+    chatRoom = room;
+    allUsers.push({ id: socket.id, username, room });
+    chatRoomUsers = allUsers.filter((user) => user.room === room);
+    socket.to(room).emit("chatroom_users", chatRoomUsers);
+    socket.emit("chatroom_users", chatRoomUsers);
   });
 });
 
