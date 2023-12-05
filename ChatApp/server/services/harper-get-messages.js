@@ -9,7 +9,7 @@ function harperGetMessages(room) {
 
   let data = JSON.stringify({
     operation: "sql",
-    sql: `SELECT * FROM realtime_chat_app.messages WHERE room = '${room}' LIMIT 100`,
+    sql: `SELECT * FROM db.messages WHERE room = '${room}' LIMIT 100`,
   });
 
   let config = {

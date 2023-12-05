@@ -26,6 +26,7 @@ const Messages = ({ socket }) => {
   }, [socket]);
 
   useEffect(() => {
+    console.log("in here");
     // Last 100 messages sent in the chat room (fetched from the db in backend)
     socket.on("last_100_messages", (last100Messages) => {
       console.log("Last 100 messages:", JSON.parse(last100Messages));
