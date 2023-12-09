@@ -1,16 +1,10 @@
 #1st build
-FROM golang:1.21.4
-WORKDIR /Docker-Kubernetes
+FROM golang:1.21.5
+WORKDIR /home/jack/dev/General/Docker-Kubernetes
 
-COPY cli ./cli
+COPY go.mod .
+COPY main.go .
 
-RUN CGO_ENABLED=0 GOOS=linux go install ./cli/server
+RUN  go build -o bin .
 
-#2nd Stage
-
-FROM alpine:latest
-WORKDIR /app/
-
-COPY --from=0 /go/bin/server ./binary
-
-CMD ./binary
+ENTRYPOINT ["/home/jack/dev/General/Docker-Kubernetes"]
