@@ -82,3 +82,39 @@
   - webserver: Container local name
   - nginx: Container image in the Docker registry
 - See Docker CLI for options to attach shells to containers
+
+### Persisting Data
+
+- Containers are ephemerous and stateless
+  - Therefore, you won't store data within containers (typically)
+- Non persistent data
+  - You can store some data that will be scrapped at the time of the container being destroyed.
+- Persistant data
+  - Stored outside containers typically in a Volume (which is mapped to a folder)
+
+### Volumes
+
+- Mapping a volume
+  - Create a volume
+  - run container with volume
+    - docker run -d --name devtest -v myvol:/app nginx:latest
+
+### YAML
+
+- YAML: YAML Ain't Markup Language
+- Human friendly data serialization standard
+- Used by Docker-Compose / Kubernetes
+
+### Docker Compose Concepts
+
+- Multi containers apps
+  - Frontend. Backend, Redis Cache
+- Solution: Docker Compose
+  - Define using YAML files
+  - Run using the docker CLI with the compose plugin
+  - Compose Specs: https://compose-spec.io
+- Docker Compose File:
+  - 3 containers: webapi1, webapi2, apigateway
+  - Good for workloads that don't require a full orchestrator
+  - Development and testing
+  - Use of a service that can run Docker Compose files (Azure, AWS)

@@ -22,3 +22,8 @@
 | docker images                                              | Lists images                                    |
 | docker rmi [imageName]                                     | Deletes the image                               |
 | docker system prune -a                                     | Removes all images not in use by any containers |
+| docker create volume [volumeName]                          | Creates a new volume                            |
+| docker volume ls                                           | Lists the volumes                               |
+| docker volume inspect [volumeName]                         | Display volume info                             |
+| docker volume rm [volumeName]                              | Deletes a volume                                |
+| docker volume prune                                        | Deletes all volumes not mounted                 |
