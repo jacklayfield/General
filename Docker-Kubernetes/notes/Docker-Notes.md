@@ -118,3 +118,82 @@
   - Good for workloads that don't require a full orchestrator
   - Development and testing
   - Use of a service that can run Docker Compose files (Azure, AWS)
+
+### Docker Compose Features
+
+- Resource Limits: Set limits on the resources available to your container
+  - limits: can use up to that amount
+  - reservations: initial allocations
+  - includes things like cpus and memory
+- Environment Variables:
+  - environment: save key value pairs in this section (services:web:environment)
+  - ${ENV_VAR}: Use this notation to access environment variables
+- Networking:
+
+  - Example with "web" and "db" services:
+    - services:web:ports: "8080:80
+    - services:db:ports: "5432"
+  - In the above example, web is reachable from outside and from db. However, db is only accessable through 5432 and db can only see web.
+  - See example below as well for a way to seperate
+
+  ```
+  services:
+    proxy:
+      image: nginx
+      networks:
+        - frontend
+      app:
+        image: myapp
+        networks:
+        - frontend
+        - backend
+      db:
+        image: postgres
+        networks:
+        - backend
+
+    networks:
+      frontend:
+      backend:
+  ```
+
+- Dependence: Allows for dependencies to start before starting certain service
+
+  - In this example, app depends on db
+
+  ```
+  services:
+    app:
+      image: myapp
+      depends_on:
+        - db
+    db:
+      image: postgres
+      networks:
+        - back-tier
+  ```
+
+- Volumes: You can declare volumes inside the volumes section and map it using ":" to a local folder
+
+  ```
+  services:
+    app:
+      image: myapp
+      depends_on:
+        - db
+    db:
+      image: postgres
+      volumes:
+        - db-data:/example/hi
+      networks:
+        - back-tier
+  volumes:
+    db-data:
+  ```
+
+  - Restart Policy:
+    - no is the default restart policy.
+    - It will not restart a container under any circumstance
+    - specifying "always" will restart a container until it's removal
+    - specifying "on-failure" will restart a container if the exit code indicates an error
+    - specifying "unless-stopped" will restart a container irrespective of the exit code but will stop restarting when the service is stopped or removed
