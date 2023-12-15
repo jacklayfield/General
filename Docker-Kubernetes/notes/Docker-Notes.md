@@ -56,6 +56,20 @@
 - Docker Hub is offered by Docker
 - Cloud providers have their own registries
 
+- Can be private or public
+- Benefit of using your cloud provider are that the images are located near your app so you don't need to make requests over the internet to retrive your images.
+
+- To retrieve an image from docker hub:
+
+  - docker pull theimage:latest
+    - This will download layers and store in docker local cache
+
+- To publish to docker hub:
+  - docker login (login to docker hub)
+  - docker tag (tag image built)
+  - docker push (push the image)
+  - docker pull (retrieve image)
+
 ### Orchestrators:
 
 - Manage
