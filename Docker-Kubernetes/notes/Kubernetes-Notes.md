@@ -70,3 +70,6 @@
   - Container a cluster, a user, and a namespace
   - Current context is the cluster that is currently the default for kubectl.
     - All kubectl commands run against that cluster
+  - Kubectx - Quickly switch context
+    - Instead of typing: kubectl config use-context minikube
+    - Simply type: kubextz [contextName]
