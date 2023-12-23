@@ -73,3 +73,38 @@
   - Kubectx - Quickly switch context
     - Instead of typing: kubectl config use-context minikube
     - Simply type: kubextz [contextName]
+
+### Declarative / Imperative
+
+- Imperative
+  - Use kubextl commands, issue a series of commands to create resources
+  - Great for learning, testing and troubleshooting
+  - It's like code
+- Declarative
+
+  - Using kubectl and YAML manifests defining the resources that you need
+  - Reproducible, repeatable
+  - Can be saved in source control
+  - Data that can be parsed/modded
+
+- Imperative:
+
+```
+kubectl run mynginx --image=nginx -- port=80
+kubectl create deploy mynginx --image=nginx --port=80 --replacas=3
+kubectl create service nodeport myservice --targetPort=8080
+kubectl delete pod nginx
+```
+
+- Declarative:
+- Use a YAML file to define the resouce then send the content of the file to the cluster to create the resources.
+
+### YAML
+
+- Root level required props
+  - apiVersion: Api version of obj
+  - kind: type of obj
+  - metadata.name: unique name for obj
+  - metadata.namespace: scoped env name
+  - spec: obj spec or desired state
+- Create an obj using YAML: kubectl create -f [YAML file]
