@@ -108,3 +108,91 @@ kubectl delete pod nginx
   - metadata.namespace: scoped env name
   - spec: obj spec or desired state
 - Create an obj using YAML: kubectl create -f [YAML file]
+
+### Namespaces
+
+- Allow you to group resouces: Dev, Test, Production (Examples)
+  - kind of like logical folders
+- K8 creates a default workspace called workspace
+- Can cross access namespace objects
+- Deleting a namespace will delete all associated child objects
+
+### Master Nodes
+
+- Masternode/Control plane
+  - Here lies the k8 controller/services
+  - Usually don't run your app containers on master
+  - etcd is a key/value datastgore where the state of the cluster is stored. Single source of truth/
+- kube-apiserver
+  - REST interface
+  - Save state to datastore (etcd)
+  - All clients interact with it, they will never go directly to the datastore.
+- kube-control-manager
+  - controller of controllers
+  - it runs
+    - node controller
+      replication controller
+      endpoints controller
+      service account and token controllers
+- cloud-control-manager
+  - interact with the cloud providers controllers
+    - Node, route, service, volume
+- kube-scheduler
+  - watches for newly created pods with no node assigned. It will select a node for them to run on
+  - Takes into account several factors for scheduling decisions including resource reqs, data locality, affinity, etc.
+
+### Worker nodes
+
+- kubelet
+  - manages the pod lifecycle and ensures containers are running/healthy
+- kube-proxy
+  - network proxy, manages rules on nodes, all network traffic goes through it
+- container runtime
+  - found on each node, can create a space to run specified containers
+- Node pool
+  - Group of virtual machines, all with the same size
+  - A cluster can have multiple node pools
+    - Eachpool can be autoscaled independently
+  - Docker Desktop limited to one node.
+
+### Pods
+
+- Atomic unit of the smallest unit of work of K8s
+- Encapsulates an app's containers
+- Represents a unit of deployment
+- pods can run one or multiple containers
+- containers within a pod share ip address, mounted volumes
+  - communicate via localhost within the pod
+- Pods are ephemeral
+- Deploying a pod is an atomic op, it succeeds or fails
+  - if faulure it is replaced with a new one with a new IP
+  - you never update a pod, you replace it with a new version
+- Scale by adding more pods, not more containers within a pod
+- A node can run many pods, and a pod can run one or more containers
+
+- Normal architecture includes a container within the pod that is the main worker, and then helper containers.
+
+### Pod lifecyle
+
+- Pod Creation:
+  - API Server -> etcd -> Scheduler -> Kubelet -> Runtime
+- Pod Deletion:
+  - API Server -> etcd -> Kubelet -> Runtime -> endpoint controller
+
+### Pod State
+
+- Pending: Accepted but not yet created
+- Running: Bound to a node
+- Succeeded: Exited with status 0
+- Failed: Exited with non 0
+- Unknown: Communication issue with pod
+- CrashLoopBackOff: Started, crashed, started, crashed again
+
+### Init Containers
+
+- Inits a pod before an application container runs
+  - Upon completion of init container job, we can then start real app.
+- Always run to completion
+- Each init container must complete successfully before next
+- If it fails, the kubelet will repeatedly restart it until it succeeds (assuming restartPolicy is NOT set to Never)
+- Probes not supported
