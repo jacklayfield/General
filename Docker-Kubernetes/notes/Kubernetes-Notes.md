@@ -196,3 +196,30 @@ kubectl delete pod nginx
 - Each init container must complete successfully before next
 - If it fails, the kubelet will repeatedly restart it until it succeeds (assuming restartPolicy is NOT set to Never)
 - Probes not supported
+
+### Selectors
+
+- Labels: key value pairs used to identify, describe and group related sets od obj/resources.
+- Selectors use these labels to filter/select objects.
+
+Example:
+
+```
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+    type: front-end
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+  nodeSelector:
+    disktype: superfast
+```
+
+- Can think of them sort of like a SQL query.
+
+```
+Select * from Nodes where disktype = superfast
+```
