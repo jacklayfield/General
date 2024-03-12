@@ -223,3 +223,20 @@ spec:
 ```
 Select * from Nodes where disktype = superfast
 ```
+
+### Multi-container Pods
+
+- Typical patterns:
+  - Sidecar: Application code seperate from infrastructure code. Example: Application runs and writes to log files, the sidecar can then copy these logs to some persistant storage.
+  - Adapter: Takes output from application layer and adapts it for some other purpose. Let's say you have an app that writes out complex monitoring output, the adapter can simpilfy this output and send to a relevant service.
+  - Ambassador: Performs actions that the app might not know how to or be able to perform. For example let's say the app needs to persist data to a db but isn't able to write directly to the desired db. It can send it to an ambassador container that can.
+
+### Networking Concepts
+
+- All containers within a pod can communicate with each other
+- All pods can communicate with each other
+- All nodes can communicate with all pods
+- Pods are given an IP address (Ephemeral)
+- Services are given a persistent IP
+
+![pod networking](./images/networking.png)
