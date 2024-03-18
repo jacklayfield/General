@@ -81,9 +81,31 @@ def main():
     # Train machine learning model
     model = train_model(X, y)
     
-    # Get current time and weather (you can integrate weather API here)
-    current_time = datetime.datetime.now()
-    weather = "sunny"  # Sample weather, replace with actual weather data
+    # Get user input for time
+    while True:
+        try:
+            hour = int(input("Enter the hour (0-23): "))
+            if hour < 0 or hour > 23:
+                raise ValueError
+            break
+        except ValueError:
+            print("Invalid input. Please enter an integer between 0 and 23.")
+            
+    while True:
+        try:
+            minute = int(input("Enter the minute (0-59): "))
+            if minute < 0 or minute > 59:
+                raise ValueError
+            break
+        except ValueError:
+            print("Invalid input. Please enter an integer between 0 and 59.")
+    
+    weather = input("Enter the weather condition (sunny, rainy, cloudy): ").lower()
+    if weather not in ["sunny", "rainy", "cloudy"]:
+        print("Invalid weather condition. Defaulting to 'sunny'.")
+        weather = "sunny"
+
+    current_time = datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, hour, minute)
     
     # Predict wait time
     predicted_wait_time = predict_wait_time(model, current_time, weather)
